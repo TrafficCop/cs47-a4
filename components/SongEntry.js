@@ -7,6 +7,7 @@ const { width } = Dimensions.get('window');
 const thirty = "28%";
 const three = "1%";
 const p2 = "3%";
+const p3 = "15%"
 
 const Song = ({ song, nav, tracks, idx }) => {
     let seconds = ((song.duration % 60000) / 1000).toFixed(0);
@@ -14,13 +15,13 @@ const Song = ({ song, nav, tracks, idx }) => {
     let time = Math.floor(song.duration / 60000) + ":" + seconds
     const hundo = '100%';
     const p1 = "8%";
-    const p3 = "15%"
+    const a = width*0.15
     
     return (
         <Pressable onPress={() => nav.navigate('DetailScreen', {url: tracks[idx]["externalUrl"]})}>
         <View style={styles.container}>
             
-            <View style= {{ width: p1, display: 'flex', justifyContent: 'center'}}>
+            <View style= {{height: a, width: p1, display: 'flex', justifyContent: 'center'}}>
                 <Pressable onPress={() => nav.navigate('PreviewScreen', {url: tracks[idx]["previewUrl"]})}>
                     <Ionicons name="play-circle" size={28} color="green" />
                 </Pressable>
