@@ -1,5 +1,6 @@
-import { Image, Text, View, StyleSheet, Dimensions } from 'react-native'
+import { Image, Text, View, StyleSheet, Dimensions, Pressable } from 'react-native'
 import { Themes } from '../assets/Themes'
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 // get width of screen
 const { width } = Dimensions.get('window');
@@ -7,18 +8,22 @@ const thirty = "28%";
 const three = "1%";
 const p2 = "3%";
 
-const Song = ({ song, idx }) => {
+const Song = ({ song, nav, tracks, idx }) => {
     let seconds = ((song.duration % 60000) / 1000).toFixed(0);
     seconds = seconds < 10 ? '0' + seconds : seconds;
     let time = Math.floor(song.duration / 60000) + ":" + seconds
     const hundo = '100%';
-    const p1 = "5%";
+    const p1 = "8%";
     const p3 = "15%"
     
     return (
+        <Pressable onPress={() => nav.navigate('DetailScreen', {url: tracks[idx]["externalUrl"]})}>
         <View style={styles.container}>
-            <View style= {{ width: p1, marginRight: three, }}>
-                <Text style={styles.descText}>{idx}</Text>
+            
+            <View style= {{ width: p1, display: 'flex', justifyContent: 'center'}}>
+                <Pressable onPress={() => nav.navigate('PreviewScreen', {url: tracks[idx]["previewUrl"]})}>
+                    <Ionicons name="play-circle" size={28} color="green" />
+                </Pressable>
             </View>
 
             <View style={{ width: p3, height: undefined, aspectRatio: 1, marginRight: p2, }}>
@@ -37,7 +42,9 @@ const Song = ({ song, idx }) => {
             <View style= {{ width: 0.08*width }}>
                 <Text numberOfLines = { 1 } style={styles.mainText}>{time}</Text>
             </View>
+            
         </View>
+        </Pressable>
     )
 }
 

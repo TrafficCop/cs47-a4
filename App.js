@@ -1,62 +1,36 @@
-import { StyleSheet, SafeAreaView, View, Text, Pressable, Dimensions } from "react-native";
+import { StyleSheet, SafeAreaView, View, Text, Pressable } from "react-native";
 import { useSpotifyAuth } from "./utils";
 import { Themes } from "./assets/Themes";
 import { SpotifyAuthButton, SongList, SpotifyLogo }from "./components";
+import { NavigationContainer } from '@react-navigation/native';
+import 'react-native-gesture-handler';
+import { createStackNavigator } from '@react-navigation/stack';
+import DetailScreen from './screens/DetailScreen';
+import PreviewScreen from './screens/PreviewScreen';
+import HomeScreen from './screens/HomeScreen';
 
-let width = Dimensions.get('window').width;
+const Stack = createStackNavigator();
 
-export default function App() {
-  // Pass in true to useSpotifyAuth to use the album ID (in env.js) instead of top tracks
-  const { token, tracks, getSpotifyAuth } = useSpotifyAuth();
-
-  let contentDisplayed = null;
-
-  if (token) {
-    contentDisplayed = (
-    <View style={styles.subContainer} >
-      <SpotifyLogo />
-      <SongList tracks={tracks} />
-    </View>
-    );
-  } else {
-    contentDisplayed = (
-      <SpotifyAuthButton authenticationFunction={getSpotifyAuth} styles={styles} />
-    );
-  }
-
-  //console.log("tracks", tracks);
-  return (
-    <SafeAreaView style={styles.container}>
-      {/* TODO: Your code goes here */}
-      {contentDisplayed}
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 60,
-    backgroundColor: Themes.colors.background,
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1,
+const opts = {
+  headerBackTitleVisible: true,
+  headerBackTitle: 'Back',
+  headerTitleAlign: 'center',
+  headerTintColor: '#0b3f78',
+  headerStyle: {
+    backgroundColor: '#121212',
   },
-  authButton: {
-    backgroundColor: Themes.colors.spotify,
-    padding: 12,
-    borderRadius: 100,
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 50,
-  },
-  authText: {
-    color: Themes.colors.white,
+  headerTitleStyle: {
+    color: '#FFFFFF',
     fontWeight: 'bold',
   },
-  subContainer: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    width: width,
-  }
-});
+}
+
+export default function App() {
+  return <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen options={{headerShown: false}} name="HomeScreen" component={HomeScreen}/>
+      <Stack.Screen options={{...opts, title: 'Song details'}} name="DetailScreen" component={DetailScreen}/>
+      <Stack.Screen options={{...opts, title: 'Song preview'}} name="PreviewScreen" component={PreviewScreen} />
+    </Stack.Navigator>
+  </NavigationContainer>
+}

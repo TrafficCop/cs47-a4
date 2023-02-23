@@ -1,21 +1,27 @@
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, Text, View, StyleSheet } from 'react-native';
 import Song from './SongEntry';
 
-const SongList = ({tracks}) => {
+const SongList = ({tracks, nav}) => {
     let hundo = '100%';
-    let eighty = '80%';
+    let ninety = '90%';
     return (
-    <View style={{width: hundo, height: hundo}}>
+    <View style={{width: hundo, height: ninety}}>
         <FlatList 
         data={tracks} 
         renderItem={({ item, index }) => {
                         return (
-                            <Song song={item} idx={index} />
+                            <Song tracks={tracks} nav={nav} song={item} idx={index} />
                         );
                     }} 
         keyExtractor={(item) => item.songTitle} />
     </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    }
+})
 
 export default SongList;
